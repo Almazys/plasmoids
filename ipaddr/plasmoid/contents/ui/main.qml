@@ -46,13 +46,13 @@ Item {
     Connections {
         target: executable
         onExited: {
-            if (cmd == "hostname -I") {
+            if (cmd == "ip -brief addr show scope global | grep UP | grep -Eo '([0-9]+\.){3}[0-9]+/[0-9]+'") {
                 var ip = stdout.trim().split(' ').filter(function () {return true}).join('\n') //filter: remove empty elements
                 root.ip = ip
                 //for(var i = 0; i < ips.length; i++) {
                 //    root.code = root.code + ips[i] + '+++';
                 //}
-            } else if (cmd == "ip addr show up") {
+            } else if (cmd == "ip -brief addr show scope global | grep UP") {
                 root.ifconfig = stdout.trim()
             }
         }
@@ -115,10 +115,10 @@ Item {
         get_ifconfig()
     }
     function get_ip() {
-        executable.exec("hostname -I")
+        executable.exec("ip -brief addr show scope global | grep UP | grep -Eo '([0-9]+\.){3}[0-9]+/[0-9]+'")
     }
     function get_ifconfig() {
-        executable.exec("ip addr show up")
+        executable.exec("ip -brief addr show scope global | grep UP")
     }
 
     PlasmaNM.NetworkStatus {
