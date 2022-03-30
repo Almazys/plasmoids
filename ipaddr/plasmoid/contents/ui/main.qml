@@ -52,14 +52,18 @@ Item {
                 //for(var i = 0; i < ips.length; i++) {
                 //    root.code = root.code + ips[i] + '+++';
                 //}
-            } else if (cmd == "ip -brief addr show scope global | grep UP") {
+            } else if (cmd == "ip -brief addr show scope global | grep UP | grep -E '([0-9]+\.){3}[0-9]+/[0-9]+'") {
                 root.ifconfig = stdout.trim()
             }
         }
     }
     Plasmoid.compactRepresentation: Item {
+
+        Layout.minimumWidth: units.gridUnit * 12
+        Layout.maximumWidth: units.gridUnit * 18
         PlasmaComponents.Label {
             text: root.ip
+
             height: parent.height
             width: parent.width
             horizontalAlignment: Text.AlignRight
@@ -92,9 +96,10 @@ Item {
         }
     }
     Plasmoid.fullRepresentation: Item {
+        Layout.minimumWidth: units.gridUnit * 12
+        Layout.maximumWidth: units.gridUnit * 18
         Layout.preferredWidth: childrenRect.width * units.devicePixelRatio
         Layout.preferredHeight: childrenRect.height * units.devicePixelRatio
-        Layout.maximumWidth: 1000
         Layout.fillHeight: true
         Layout.fillWidth: true
         PlasmaComponents.Label {
@@ -118,7 +123,7 @@ Item {
         executable.exec("ip -brief addr show scope global | grep UP | grep -Eo '([0-9]+\.){3}[0-9]+/[0-9]+'")
     }
     function get_ifconfig() {
-        executable.exec("ip -brief addr show scope global | grep UP")
+        executable.exec("ip -brief addr show scope global | grep UP | grep -E '([0-9]+\.){3}[0-9]+/[0-9]+'")
     }
 
     PlasmaNM.NetworkStatus {
